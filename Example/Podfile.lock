@@ -1,0 +1,14 @@
+PODS:
+  - PKActivityIndicator (0.1.0)
+
+DEPENDENCIES:
+  - PKActivityIndicator (from `../`)
+
+EXTERNAL SOURCES:
+  PKActivityIndicator:
+    :path: ../
+
+SPEC CHECKSUMS:
+  PKActivityIndicator: d07c14127465915ee2aa4a885dcd5b4bdfb093f3
+
+COCOAPODS: 0.37.2

@@ -1,0 +1,6 @@
+framework module PKActivityIndicator {
+  umbrella header "Pods-PKActivityIndicator_Example-PKActivityIndicator-umbrella.h"
+
+  export *
+  module * { export * }
+}
