@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "PKActivityIndicator"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "Simply customizable indicator."
   s.description      = <<-DESC
   You can change indicator's bar width, height, aperture, number, animation duration.
