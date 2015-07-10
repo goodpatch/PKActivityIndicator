@@ -38,7 +38,6 @@ static NSString * const PKActivityIndicatorAnimationKey = @"PKActivityIndicatorA
     self.fadeAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     self.fadeAnimation.repeatCount = HUGE_VALF;
     
-    self.marker.opacity = 1;
     self.spinnerReplicator.transform = CATransform3DRotate(self.spinnerReplicator.transform, M_PI, 0, 0, 1);
     self.aperture = 10;
     self.barWidth = 2;
@@ -94,6 +93,7 @@ static NSString * const PKActivityIndicatorAnimationKey = @"PKActivityIndicatorA
 }
 
 - (void)stopAnimating {
+    self.spinnerReplicator.opacity = 0;
     [self.marker removeAnimationForKey:PKActivityIndicatorAnimationKey];
 }
 
