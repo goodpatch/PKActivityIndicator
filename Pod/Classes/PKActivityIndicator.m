@@ -33,47 +33,45 @@ static NSString * const PKActivityIndicatorAnimationKey = @"PKActivityIndicatorA
     self.marker = [CALayer layer];
     self.spinnerReplicator = [CAReplicatorLayer layer];
     self.fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    self.fadeAnimation.fromValue = [NSNumber numberWithFloat:1.0f];
-    self.fadeAnimation.toValue = [NSNumber numberWithFloat:0.0f];
+    self.fadeAnimation.fromValue = [NSNumber numberWithFloat:1];
+    self.fadeAnimation.toValue = [NSNumber numberWithFloat:0];
     self.fadeAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     self.fadeAnimation.repeatCount = HUGE_VALF;
     
-    self.marker.opacity = 1.0f;
-    self.spinnerReplicator.transform = CATransform3DRotate(self.spinnerReplicator.transform, M_PI, 0.0f, 0.0f, 1.0f);
-    self.aperture = 10.0f;
-    self.barWidth = 2.0f;
-    self.barHeight = 8.0f;
+    self.marker.opacity = 1;
+    self.spinnerReplicator.transform = CATransform3DRotate(self.spinnerReplicator.transform, M_PI, 0, 0, 1);
+    self.aperture = 10;
+    self.barWidth = 2;
+    self.barHeight = 8;
     self.barColor = [UIColor colorWithWhite:0 alpha:.8];
-    self.numberOfBars = 12.0f;
-    self.anmDuration = 1.0f;
+    self.numberOfBars = 12;
+    self.anmDuration = 1;
     
     [self createLayers];
     [self updateLayers];
 }
 
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     [self updateLayers];
 }
 
-- (void)updateLayers
-{
+- (void)updateLayers {
     CGFloat side = self.aperture*2 + self.barHeight*2;
     self.bounds = CGRectMake(0, 0, side, side);
     // Update marker
-    self.marker.bounds = CGRectMake(0.0f, 0.0f, self.barWidth, self.barHeight);
+    self.marker.bounds = CGRectMake(0, 0, self.barWidth, self.barHeight);
     self.marker.cornerRadius = self.barWidth/2;
     self.marker.backgroundColor = self.barColor.CGColor;
-    self.marker.position = CGPointMake(side * 0.5f, side * 0.5f + self.aperture);
+    self.marker.position = CGPointMake(side * 0.5, side * 0.5 + self.aperture);
     
     // Update replicaitons
-    self.spinnerReplicator.bounds = CGRectMake(0.0f, 0.0f, side, side);
-    self.spinnerReplicator.cornerRadius = 10.0f;
+    self.spinnerReplicator.bounds = CGRectMake(0, 0, side, side);
+    self.spinnerReplicator.cornerRadius = 10;
     self.spinnerReplicator.position = CGPointMake(CGRectGetMidX(self.bounds),CGRectGetMidY(self.bounds));
     
-    CGFloat angle = (2.0f * M_PI) / (self.numberOfBars);
-    CATransform3D instanceRotation = CATransform3DMakeRotation(angle, 0.0f, 0.0f, 1.0f);
+    CGFloat angle = (2 * M_PI) / (self.numberOfBars);
+    CATransform3D instanceRotation = CATransform3DMakeRotation(angle, 0, 0, 1);
     self.spinnerReplicator.instanceCount = self.spinnerInstanceCount;
     self.spinnerReplicator.instanceTransform = instanceRotation;
 }
@@ -81,12 +79,13 @@ static NSString * const PKActivityIndicatorAnimationKey = @"PKActivityIndicatorA
 - (void)createLayers {
     [self.spinnerReplicator addSublayer:self.marker];
     [self.layer addSublayer:self.spinnerReplicator];
-    self.marker.opacity = 0.0f;
+    self.spinnerReplicator.opacity = 0;
 }
 
 #pragma mark - public
 
 - (void)startAnimating {
+    self.spinnerReplicator.opacity = 1;
     [self.fadeAnimation setDuration:self.anmDuration];
     CGFloat markerAnimationDuration = self.anmDuration / self.numberOfBars;
     self.spinnerReplicator.instanceDelay = markerAnimationDuration;
@@ -94,18 +93,20 @@ static NSString * const PKActivityIndicatorAnimationKey = @"PKActivityIndicatorA
     self.spinnerReplicator.instanceCount = self.spinnerInstanceCount;
 }
 
-- (void)stopAnimating
-{
+- (void)stopAnimating {
     [self.marker removeAnimationForKey:PKActivityIndicatorAnimationKey];
 }
 
-- (BOOL)isAnimating
-{
+- (BOOL)isAnimating {
     return [self.marker animationForKey:PKActivityIndicatorAnimationKey] != nil;
 }
 
 - (void)setSpinnerReplicatorInstanceCountWithPercentage:(CGFloat)percentage {
-    self.marker.opacity = 1.0;
+    if (percentage > 0)
+        self.spinnerReplicator.opacity = 1;
+    else
+        self.spinnerReplicator.opacity = 0;
+
     NSInteger count = MAX(0,percentage) * self.numberOfBars;
     self.spinnerReplicator.instanceCount = count;
     self.spinnerInstanceCount = count;
